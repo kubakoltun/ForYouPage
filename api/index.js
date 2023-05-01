@@ -1,9 +1,12 @@
 const express = require('express');
 const app = express();
+
+app.use(express.json());
+
 const db = require('./models');
 
-//Routers
 const postRouter = require('./routes/posts.js');
+
 app.use('/posts', postRouter);
 
 db.sequelize.sync().then(() => {
