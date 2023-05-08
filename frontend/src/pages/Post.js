@@ -5,13 +5,32 @@ import axios from 'axios';
 function Post() {
     let { id } = useParams();
     const [postObject, setPostObject] = useState({});
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState("");
 
     useEffect(() => {
         axios.get(`http://127.0.0.1:8000/posts/byId/${id}`)
         .then((response) => {
             setPostObject(response.data);
         });
-    });
+
+        axios.get(`http://127.0.0.1:8000/comments/${id}`)
+        .then((response) => {
+            setComments(response.data);
+        });
+    }, []);
+
+    const addComment = () => {
+        axios.post(`http://127.0.0.1:8000/comments`, {
+            commentBody: newComment, 
+            postId: id,
+        })
+            .then((response) => {
+                const commentToAdd = {commentBody: newComment}
+                setComments([...comments, commentToAdd]);
+                setNewComment("");
+            })
+    }
 
     return (
         <div className="postPage">
@@ -29,7 +48,26 @@ function Post() {
                 </div>
             </div>
             <div className="rightSide">
-                Comment Section
+                <div className='addCommentContainer'>
+                    <input 
+                        type="text" 
+                        placeholder="Comment..."
+                        value={newComment} 
+                        onChange={(event) => {
+                        setNewComment(event.target.value)
+                        }} 
+                    />
+                    <button onClick={addComment}>Add Comment</button>
+                </div>
+                <div className='listOfComments'>
+                    {comments.map((comment, key) => {
+                        return (
+                            <div key={key} className='comment'>
+                                {comment.commentBody}
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
         </div>
     );

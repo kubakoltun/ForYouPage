@@ -9,8 +9,8 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <div className='navbar'>
-          <Link to="/create-post">Create a Post</Link>
           <Link to="/">Home</Link>
+          <Link to="/create-post">Create a Post</Link>
         </div>
         <Routes>
           <Route path="/" exact element={<Home />} />
