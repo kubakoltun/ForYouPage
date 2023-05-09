@@ -21,15 +21,26 @@ function Post() {
     }, []);
 
     const addComment = () => {
-        axios.post(`http://127.0.0.1:8000/comments`, {
-            commentBody: newComment, 
-            postId: id,
-        })
+        axios.post(`http://127.0.0.1:8000/comments`, 
+            {
+                commentBody: newComment, 
+                postId: id,
+            }, 
+            {
+                headers: {
+                    accessToken: localStorage.getItem("accessToken"),
+                },
+            }
+        )
             .then((response) => {
-                const commentToAdd = {commentBody: newComment}
-                setComments([...comments, commentToAdd]);
-                setNewComment("");
-            })
+                if (response.data.error) {
+                    alert(response.data.error);
+                } else {
+                    const commentToAdd = {commentBody: newComment, username: response.data.username}
+                    setComments([...comments, commentToAdd]);
+                    setNewComment("");
+                }
+            });
     }
 
     return (
@@ -54,7 +65,7 @@ function Post() {
                         placeholder="Comment..."
                         value={newComment} 
                         onChange={(event) => {
-                        setNewComment(event.target.value)
+                            setNewComment(event.target.value)
                         }} 
                     />
                     <button onClick={addComment}>Add Comment</button>
@@ -64,6 +75,7 @@ function Post() {
                         return (
                             <div key={key} className='comment'>
                                 {comment.commentBody}
+                                <label> Username: {comment.username}</label>
                             </div>
                         );
                     })}
