@@ -18,7 +18,11 @@ module.exports = (sequelize, DataTypes) => {
         posts.hasMany(models.comments,  {
             onDelete: "cascade",
         });
-    };
 
+        posts.hasMany(models.likes,  {
+            onDelete: "cascade",
+        });
+    };        
+    
     return posts;
 };
