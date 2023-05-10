@@ -5,6 +5,7 @@ import Post from './pages/Post';
 import Registration from './pages/Registration';
 import Login from './pages/Login';
 import PageNotFound from './pages/PageNotFound';
+import Profile from './pages/Profile';
 import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
 import { AuthContext } from './helpers/AuthContext.js';
 import { useState, useEffect } from 'react';
@@ -54,14 +55,19 @@ function App() {
       <AuthContext.Provider value={{authState, setAuthState}}>
         <BrowserRouter>
           <div className='navbar'>
-            <Link to="/">Home</Link>
-            <Link to="/create-post">Create a Post</Link>
-            {!authState.status && 
+            {!authState.status ? ( 
                 <>
                   <Link to="/login">Login</Link>
                   <Link to="/registration">Register</Link>
                 </>
+              ) : (
+                <>
+                  <Link to="/">Home</Link>
+                  <Link to="/create-post">Create a Post</Link>
+                </>
+              )
             }
+            
             <div className='loggedInContainer'>
               <h1>{authState.username}</h1>
               {authState.status &&
@@ -74,6 +80,7 @@ function App() {
             <Route path="/post/:id" exact element={<Post />} />
             <Route path="/registration" exact element={<Registration />} />
             <Route path="/login" exact element={<Login />} />
+            <Route path="/profile/:id" exact element={<Profile />} />
             <Route path="*" exact element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>

@@ -1,23 +1,29 @@
-import { React, useEffect, useState } from 'react';
+import { React, useEffect, useContext, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import { AuthContext } from '../helpers/AuthContext.js'
 
 function Home() {
     const [listOfPosts, setListOfPosts] = useState([]);
     const [likedPosts, setLikedPosts] = useState([]);
+    const { authState } = useContext(AuthContext);
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:8000/posts",
-        {headers: {accessToken: localStorage.getItem("accessToken")}}
-        )
+      if (!localStorage.getItem("accessToken")) {
+        navigate(`/login`);
+      } else {
+        axios.get("http://127.0.0.1:8000/posts",{
+          headers: {accessToken: localStorage.getItem("accessToken")}
+        })
         .then((response) => {
             setListOfPosts(response.data.listOfPosts);
             setLikedPosts(response.data.likedPosts.map((like) => {
               return like.postId;
             }));
         });
+      }
     }, []);
 
     const likePost = (postId) => {
@@ -71,7 +77,9 @@ function Home() {
             </div>
             <div className="footer">
               <div className='username'>
-                {value.userName}
+                <Link to={`/profile/${value.userId}`}>
+                  {value.userName}
+                </Link>
               </div>
               <div className='buttons'>
                 <ThumbUpAltIcon

@@ -1,29 +1,39 @@
-import { React } from 'react';
+import { React, useContext, useState, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { AuthContext } from '../helpers/AuthContext.js'
 
 function CreatePost() {
+    const { authState } = useContext(AuthContext);
     let navigate = useNavigate();
 
     const initialValues = {
         title: "",
         postText: "",
-        userName: "",
     };
+
+    useEffect(() => {
+        if (!localStorage.getItem("accessToken")) {
+            navigate('/login');
+        }
+    }, []);
 
     const validationSchema =  Yup.object().shape({
         title: Yup.string().required("Title must be entered"),
         postText: Yup.string().required(),
-        userName: Yup.string().min(3).max(15).required(),
     });
 
     const onSubmit = (data) => {
-        axios.post("http://127.0.0.1:8000/posts", data)
+        axios.post("http://127.0.0.1:8000/posts", 
+            data,
+            {headers: {
+                accessToken: localStorage.getItem("accessToken")
+            },}
+        )
         .then((response) => {
             navigate('/');
-            console.log(`positive submition`);
         });
     };
 
@@ -51,14 +61,6 @@ function CreatePost() {
                         id="inputCreatePost" 
                         name="postText" 
                         placeholder="Dr. Dragon" 
-                    />
-                
-                    <label>Username: </label>
-                    <ErrorMessage name="userName" component="span" />
-                    <Field 
-                        id="inputCreatePost" 
-                        name="userName" 
-                        placeholder="DragonExpert7" 
                     />
 
                     <button type="submit">Create Post</button>
