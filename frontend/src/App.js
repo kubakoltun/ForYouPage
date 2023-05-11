@@ -6,6 +6,7 @@ import Registration from './pages/Registration';
 import Login from './pages/Login';
 import PageNotFound from './pages/PageNotFound';
 import Profile from './pages/Profile';
+import ChangePassword from './pages/ChangePassword';
 import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
 import { AuthContext } from './helpers/AuthContext.js';
 import { useState, useEffect } from 'react';
@@ -47,7 +48,7 @@ function App() {
         username: "",
         id: 0,
         status: false,
-    });
+      });
   }
 
   return (
@@ -81,6 +82,7 @@ function App() {
             <Route path="/registration" exact element={<Registration />} />
             <Route path="/login" exact element={<Login />} />
             <Route path="/profile/:id" exact element={<Profile />} />
+            <Route path="/change-password" exact element={<ChangePassword />} />
             <Route path="*" exact element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>

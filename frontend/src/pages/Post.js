@@ -1,5 +1,5 @@
 import { React, useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../helpers/AuthContext.js'
@@ -73,21 +73,71 @@ function Post() {
             });
     };
 
+    const editPost = (option) => {
+        if (option === "title") {
+            let newTitle = prompt("Enter new title:");
+            axios.put(`http://127.0.0.1:8000/posts/title`, 
+                {
+                    newTitle: newTitle, 
+                    id: id,
+                },
+                {
+                    headers: {
+                        accessToken: localStorage.getItem("accessToken")
+                    },
+                }
+            );
+            setPostObject({...postObject, title: newTitle});
+        } else {
+            let newPostText = prompt("Enter new text:");
+            axios.put(`http://127.0.0.1:8000/posts/postText`, 
+                {
+                    newPostText: newPostText, 
+                    id: id,
+                },
+                {
+                    headers: {
+                        accessToken: localStorage.getItem("accessToken")
+                    },
+                }
+            );
+            setPostObject({...postObject, postText: newPostText});
+        }
+    }
+
     return (
         <div className="postPage">
             <div className="leftSide">
                 <div className="post" id="individual">
-                    <div className="title">
+                    <div 
+                        className="title" 
+                        onClick={() => {
+                            if (authState.username === postObject.userName) {
+                                editPost("title")
+                            }
+                        }}
+                    >
                         {postObject.title}
                         {authState.username === postObject.userName && 
                             <button onClick={() => {deletePost(postObject.id)}}>Delete post</button>
                         }
                     </div>
-                    <div className="body">
+                    <div 
+                        className="body"
+                        onClick={() => {
+                            if (authState.username === postObject.userName) {
+                                editPost("body")
+                            }
+                        }}
+                    >
                         {postObject.postText}
                     </div>
                     <div className="footer">
-                        {postObject.userName}
+                        <div className='username'>
+                            <Link to={`/profile/${postObject.userId}`}> 
+                                {postObject.userName}
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>

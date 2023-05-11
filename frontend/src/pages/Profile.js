@@ -1,11 +1,14 @@
-import { React, useEffect, useState } from 'react';
+import { React, useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import { AuthContext } from '../helpers/AuthContext.js'
 
 function Profile() {
     const [username, setUsername] = useState("");
     const [listOfPosts, setListOfPosts] = useState([]);
+    const { authState } = useContext(AuthContext);
+
     let navigate = useNavigate();
     let { id } = useParams();
 
@@ -24,7 +27,22 @@ function Profile() {
     return (
         <div className='profilePageContainer'>
             <div className='basicInfo'>
-                <h1>{username}'s posts</h1>
+                
+                {authState.username === username ? (
+                        <>
+                        <h1>Your posts {username}</h1>
+                        <button 
+                            onClick={() => {
+                                navigate(`/change-password`);
+                            }}
+                        > 
+                            Change my password 
+                        </button>
+                        </>
+                    ) : (
+                        <h1>{username}'s posts</h1>
+                    )
+                }
             </div>
             <div className='listOfPosts'>
                 {listOfPosts.map((value, key) => {

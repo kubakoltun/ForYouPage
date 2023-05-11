@@ -77,7 +77,7 @@ function Home() {
             </div>
             <div className="footer">
               <div className='username'>
-                <Link to={`/profile/${value.userId}`}>
+                <Link to={`/profile/${value.userId}`}> 
                   {value.userName}
                 </Link>
               </div>
