@@ -45,7 +45,7 @@ function Home() {
               } else {
                 return post;
               } 
-            })
+             })
             );
 
             if (likedPosts.includes(postId)) {
