@@ -19,7 +19,6 @@ router.post('/', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
-
     const user = await users.findOne({ where: { username: username }});
     
     if (!user) {
@@ -47,7 +46,6 @@ router.get('/auth', validateToken, (req, res) => {
 
 router.get('/basicinfo/:id', async (req, res) => {
     const id = req.params.id;
-
     const bacisInfo = await users.findByPk(id, {
         attributes: {exclude: ['password']}
     });
