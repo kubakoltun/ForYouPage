@@ -2,26 +2,26 @@ import { React, useState } from 'react';
 import axios from 'axios';
 
 function ChangePassword() {
-const [oldPassword, setOldPassword] = useState("");
-const [newPassword, setNewPassword] = useState("");
+    const [oldPassword, setOldPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
 
-const changePassword = () => {
-    axios.put(`http://127.0.0.1:8000/auth/change-password`, 
-        {
-            oldPassword: oldPassword,
-            newPassword: newPassword,
-        },
-        {
-            headers: {
-                accessToken: localStorage.getItem('accessToken'),
+    const changePassword = () => {
+        axios.put(`http://127.0.0.1:8000/auth/change-password`, 
+            {
+                oldPassword: oldPassword,
+                newPassword: newPassword,
             },
-        },
-    ).then((response) => {
-        if (response.data.error) {
-            alert(response.data.error);
-        }
-    })
-}
+            {
+                headers: {
+                    accessToken: localStorage.getItem('accessToken'),
+                },
+            },
+        ).then((response) => {
+            if (response.data.error) {
+                alert(response.data.error);
+            }
+        })
+    }
 
     return (
         <div>
