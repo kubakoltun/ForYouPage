@@ -6,10 +6,8 @@ import { AuthContext } from '../helpers/AuthContext.js'
 function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-
     const {setAuthState} = useContext(AuthContext);
     const navigate = useNavigate();
-
     const login = () => {
         const data = { username: username, password: password }
         axios.post('http://127.0.0.1:8000/auth/login', data)
