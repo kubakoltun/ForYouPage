@@ -8,7 +8,6 @@ import { AuthContext } from '../helpers/AuthContext.js'
 function CreatePost() {
     const { authState } = useContext(AuthContext);
     let navigate = useNavigate();
-
     const initialValues = {
         title: "",
         postText: "",
@@ -24,7 +23,6 @@ function CreatePost() {
         title: Yup.string().required("Title must be entered"),
         postText: Yup.string().required(),
     });
-
     const onSubmit = (data) => {
         axios.post("http://127.0.0.1:8000/posts", 
             data,
