@@ -6,7 +6,6 @@ import axios from 'axios';
 
 function Registration() {
     const navigate = useNavigate();
-
     const initialValues = {
         username: "",
         password: "",
