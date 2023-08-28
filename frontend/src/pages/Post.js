@@ -10,7 +10,6 @@ function Post() {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState("");
     const { authState } = useContext(AuthContext);
-
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -104,6 +103,7 @@ function Post() {
             setPostObject({...postObject, postText: newPostText});
         }
     }
+    
 
     return (
         <div className="postPage">
