@@ -6,13 +6,13 @@ const { validateToken } = require('../middlewares/authMiddleware.js')
 router.post('/', validateToken, async (req, res) => {
     const {postId} = req.body;
     const userId = req.user.id;
-
     const found = await likes.findOne({
         where: {
             postId: postId,
             userId: userId,
         },
     });
+    
     if (!found) {
         await likes.create({
             postId: postId, 
